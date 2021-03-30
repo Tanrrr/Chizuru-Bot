@@ -26,7 +26,7 @@ async def on_ready():
     elif datetime.datetime.now().hour < 17:
         print(f"Good Afternoon! It is currently {cur_time}, and I'm currently connected to {guild_ammount} servers!")
     elif datetime.datetime.now().hour < 24:
-        print(f"Good Evening! It is currently {cur_time}, and I'm currently connected to {guild_ammount} server!")  
+        print(f"Good Evening! It is currently {cur_time}, and I'm currently connected to {guild_ammount} servers!")  
 
     #Bot status
     await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.watching, name="out for Ruka!"))
@@ -48,11 +48,10 @@ async def on_guild_remove(guild):
     with open('prefixes.json', 'r') as f:
         prefixes = json.load(f)
 
-    prefixes.pop(str(guild.id))
+        prefixes.pop(str(guild.id))
 
     with open('prefixes.json', 'w') as f:
         json.dump(prefixes, f, indent=4)
-
 
 #Simple ping command
 @bot.command()
@@ -69,6 +68,11 @@ async def prefix(ctx, prefix):
 
     with open('prefixes.json', 'w') as f:
         json.dump(prefixes, f, indent=4)
+
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        print(f"Loaded {filename} cog!")
+        bot.load_extension(f'cogs.{filename[:-3]}')
 
 
 
