@@ -4,6 +4,9 @@ import datetime
 import discord
 import json
 from discord.ext import commands
+from database.profiledb import ProfileDB
+
+db = ProfileDB()
 
 def get_prefix(bot, message):
     with open('prefixes.json', 'r') as f:
