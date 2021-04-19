@@ -6,8 +6,6 @@ from discord.ext import commands
 
 db = ProfileDB()
 
-
-
 class Banking(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -19,14 +17,19 @@ class Banking(commands.Cog):
         db.open_account(ctx.guild.id, user.id)
 
     @commands.command(aliases=['b', 'bal'])
-    async def balance(self, ctx):
-        user = ctx.author
+    async def balance(self, ctx, member: discord.Member):
+        user = None
 
-        db.open_account(ctx.guild.id, ctx.author.id)
+        if not member:
+            user = ctx.author
+        else:
+            user = member
 
-        bal = db.get_bank_data(ctx.guild.id, ctx.author.id)
+        db.open_account(ctx.guild.id, user.id)
 
-        embed=discord.Embed(title=f' {bal} $')
+        bal = db.get_bank_data(ctx.guild.id, user.id)
+
+        embed=discord.Embed(color=0xdb6b6b,title=f'${bal}')
         embed.set_author(name=f"{user}'s Balance", icon_url=f'{user.avatar_url}')
         await ctx.send(embed=embed)
 
